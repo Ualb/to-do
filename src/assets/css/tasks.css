@@ -1,0 +1,31 @@
+
+* {
+    margin: 0;
+    padding: 0;
+} 
+
+.collectionItem span {
+    color: #009688 ;
+} 
+
+.collectionItem { 
+    width: 100%;
+    cursor: pointer; 
+    display: flex;
+    justify-content: space-between;
+}
+
+.button {
+    color: #b5bc00;
+    cursor: pointer; 
+}
+
+.button:hover {
+    color: red;
+    cursor: pointer;
+    
+}
+
+.nothing h4 {
+    font-size: 1.8rem;
+}

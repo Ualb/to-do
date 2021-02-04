@@ -1,7 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 .task { 
+    background: #213a73;
 } 
 
+.white-header {
+    color: white;
+}
+
 .task  h3 {
+    color: white;
+    font-weight: 560;;
     font-family: 'Libre Baskerville', serif;
     text-align: center;
 }
