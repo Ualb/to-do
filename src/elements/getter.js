@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button, TextInput, Row, Col, Icon, Container} from 'react-materialize'; 
+import { Button, TextInput, Row, Col, Icon, Container } from 'react-materialize'; 
 
 import '../assets/css/getter.css';
 
 class Getter extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -15,12 +16,28 @@ class Getter extends React.Component {
 
     inputChange = (event) => {  
         this.setState({
-            inputText: event.target.value,
+            inputText: event.target.value
         });
     } 
 
-    addTask = () => {
-        
+    addTask = () => { 
+        // new object of task
+        const task =  new this.props.task();
+        task.title = this.state.inputText;
+        task.isDone = false;  
+
+        this.props.setTasks([...this.props.tasks, task]);
+        this.props.setZeroTasks(true);
+
+        this.setState({
+            inputText: ''
+        });
+    }
+
+    introInput = (event) => {
+        if (event.keyCode === 13) {
+            this.addTask();
+        }
     }
 
     render() {
@@ -32,11 +49,18 @@ class Getter extends React.Component {
                     </Col>
                     <Col s={ 12 }>
                         <TextInput icon={<Icon>assignment</Icon>} 
-                                   id="TextInput-4" 
+                                   id="TextInput-4"
+                                   className="white-header" 
                                    label="new task" 
                                    s={ 11 } 
-                                   onChange={this.inputChange} /> 
-                        <Button node="button" waves="light" s={ 1 } onClick={this.addTask}>
+                                   onChange={this.inputChange} 
+                                   onKeyDown={this.introInput} 
+                                   value={this.state.inputText} /> 
+                        <Button node="button" 
+                                waves="light" 
+                                className="white-header"
+                                s={ 1 } 
+                                onClick={this.addTask}>
                             Add
                         </Button>
                     </Col>   
@@ -44,6 +68,7 @@ class Getter extends React.Component {
             </Container>    
         );
     }
+
 }; 
 
 export default Getter;
