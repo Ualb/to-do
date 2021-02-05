@@ -4,12 +4,16 @@ import Tasks from './elements/tasks';
 
 function App() {
 
+  // arrays of task of the todo list
   const [tasks, setTasks] = useState([]);
+  // for the text, if there are not taks
   const [zeroTasks, setZeroTasks] = useState(false);
+  const [idTask, setIdTask] = useState(1);
   // object for new tasks
-  function task(title, done) {
+  function task(id, title, done) {
+    this.id = idTask;
     this.title = title;
-    // true - donde -- false - pending
+    // true - done -- false - pending
     this.isDone = done;
   }  
 
@@ -19,11 +23,10 @@ function App() {
 
   return (
     <> 
-      <Getter tasks={ tasks } setTasks={ setTasks } task={ task } setZeroTasks={ setZeroTasks } />
-      <Tasks todo={ tasks } zeroTasks={ zeroTasks } />
+      <Getter tasks={ tasks } setTasks={ setTasks } task={ task } setZeroTasks={ setZeroTasks } setIdTask={ setIdTask } idTask={ idTask } />
+      <Tasks todos={ tasks } setTodos={ setTasks } zeroTasks={ zeroTasks } setZeroTasks={ setZeroTasks } />
     </>
   ); 
-  
 }
 
 export default App;

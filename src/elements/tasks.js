@@ -1,48 +1,89 @@
-import { Row, Container } from "react-materialize"; 
-import Collection from "react-materialize/lib/Collection";
-import CollectionItem from "react-materialize/lib/CollectionItem";
-import Icon from "react-materialize/lib/Icon";
+import { Row, Container, Collection, CollectionItem, Icon } from "react-materialize";  
+
+// for the animations alerts
+import swal from 'sweetalert';
 
 import "../assets/css/tasks.css";
 
 function Tasks(props) {
     
-    const { todo, zeroTasks } = props;
-    console.log(todo);
+    const { todos, zeroTasks, setTodos, setZeroTasks } = props; 
 
-    const delTask = (event) => {
-        alert("quieres eliminar");
-        event.stopPropagation();
-    }
+    // the function delete the task for the component with parameter id 
+    const delTask = (id) => {
+        // function of alert's 
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, cannot be recovered!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                // filtering the todos with diferents id's 
+                const rmTodo = [...todos].filter(todo => todo.id !== id);
+                // update todos
+                setTodos(rmTodo);  
+                
+                // none todos, so, Nothing to do text is show
+                if(rmTodo.length === 0) {
+                    setZeroTasks(false); 
+                }
+                // deleted
+                swal("Poof! Your task is deleted!", {
+                    icon: "success",
+                });
 
-    // const removeTodo = id => {
-    //     const removeArr = [...todos].filter(todo => todo.id !== id);
-    //     setTodos(removeArr);
-    // }
+            } else {
+              swal("Your task is safe!");
+            }
+          });
+    } 
 
-    const doneTask = (event) => {
-        alert("quieres dar por concluido");
-        alert(event.target.key);
-    }
+    // the task is done
+    const doneTask = (id) => { 
+        // updating the todo with the id match
+        const newTodos = todos.map(task => { 
+            if(task.id === id) {
+                task.isDone = !task.isDone;
+            }
+            return task;
+        });
+        // updating the react hook 
+        setTodos(newTodos); 
+    } 
     
-    if(zeroTasks || todo.lenght !== undefined ) {
+    // there are todos or none 
+    if(zeroTasks || todos.lenght !== undefined) {
         return (
             <Container className="container">
-                { todo && todo.map(function(task, i)  {
+                { todos && todos.map(function(task, i)  {
                     return ( 
-                        <Collection className="collection" >
-                            <CollectionItem className="collectionItem" onClick={ doneTask } key={ i }>
-                                {/* <li  > */}
-                                    <span>
+                        <Collection key={ i } >
+                            { !task.isDone ?
+                                <CollectionItem className="todo" > 
+                                    <span className="default-span" onClick={ () => doneTask(task.id) }>
                                         { task.title }
                                     </span>
-                                    <div className='button' onClick={ delTask } >
+                                    <div className='button' onClick={ () => delTask(task.id) } >
                                         <Icon>
                                             delete
                                         </Icon>
-                                    </div>                                    
-                                {/* </li>  */}
-                            </CollectionItem> 
+                                    </div>        
+                                </CollectionItem> 
+                            :
+                                <CollectionItem className="done" > 
+                                    <span onClick={ () => doneTask(task.id) }>
+                                        { task.title }
+                                    </span>
+                                    <div className='button-done' onClick={ () => delTask(task.id) } >
+                                        <Icon>
+                                            delete
+                                        </Icon>
+                                    </div>        
+                                </CollectionItem>                         
+                            }
                         </Collection>
                     );
                 })}
@@ -60,8 +101,7 @@ function Tasks(props) {
                 </Container>                
             </>
         );
-    }
-    
+    }    
 }
 
 export default Tasks;

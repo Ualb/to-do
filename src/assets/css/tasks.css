@@ -1,31 +1,74 @@
-
 * {
     margin: 0;
     padding: 0;
 } 
-
-.collectionItem span {
-    color: #009688 ;
-} 
-
-.collectionItem { 
-    width: 100%;
-    cursor: pointer; 
+ 
+/* style of span and button with icon (delete) */
+.todo {  
+    /* layout */
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    /* mouse */
+    cursor: pointer; 
 }
 
+/* mouse hover on task */
+.todo:hover {
+    background: #eeeeee; 
+}
+
+/* defaul span style */
+.default-span {
+    /* text */
+    color: #009688 ;
+    /* layout */
+    width: 100%;
+} 
+
+/* task done style */
+.done { 
+    /* layout */
+    display: flex;
+    justify-content: space-between; 
+    width: 100%;
+    /* font and text */
+    text-decoration: line-through;
+    /* colors */
+    color: white;
+    background: #4db6ac !important;
+    /* mouse */
+    cursor: pointer; 
+} 
+
+/* special witth for the done task */
+.done span {
+    width: 100%;
+}
+
+/* styles for the button states */
 .button {
     color: #b5bc00;
+    cursor: pointer; 
+}
+
+.button-done {
+    color: white;
     cursor: pointer; 
 }
 
 .button:hover {
     color: red;
     cursor: pointer;
-    
 }
 
+.button-done:hover {
+    color: red;
+    cursor: pointer;
+}
+
+/* Nothing to do text in bottom space */
 .nothing h4 {
+    font-family: 'Roboto', sans-serif;
     font-size: 1.8rem;
 }

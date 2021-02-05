@@ -3,17 +3,31 @@
     padding: 0;
 }
 
-.task { 
+/* grandfather of input and button */
+.input-form { 
     background: #213a73;
 } 
 
-.white-header {
+/* father of input and  button*/
+.elements { 
+    display: flex;
+    align-items: center;
+}
+
+/* title of the app */
+.input-form  h3 {
+    color: white;
+    font-weight: 560;;
+    font-family: 'Roboto', sans-serif;    
+    text-align: center;
+}
+
+/* color of the input text */
+.write-input {
     color: white;
 }
 
-.task  h3 {
-    color: white;
-    font-weight: 560;;
-    font-family: 'Libre Baskerville', serif;
-    text-align: center;
+/* button add */
+.button-form {
+    background: #b5bc00;
 }
