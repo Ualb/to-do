@@ -1,6 +1,9 @@
 import React from 'react';
 import { Button, TextInput, Row, Col, Icon, Container } from 'react-materialize'; 
 
+// for the animations alerts
+import swal from 'sweetalert';
+
 import '../assets/css/getter.css';
 
 class Getter extends React.Component {
@@ -25,6 +28,13 @@ class Getter extends React.Component {
     addTask = () => { 
         // new object of task
         const task =  new this.props.task();
+        task.title = this.state.inputText;
+        // validate the input text
+        if(task.title.trim() === "") {
+            swal("Your task is not valid");
+            return;
+        }
+        // all ok
         task.title = this.state.inputText.charAt(0).toUpperCase() + this.state.inputText.slice(1);
         task.isDone = false;
         task.id = this.props.idTask;
