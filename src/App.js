@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react'; 
-import Getter from './elements/getter';
-import Tasks from './elements/tasks'; 
+import React, { useState, useEffect } from 'react';
+// import Getter from './elements/getter';
+// import Tasks from './elements/tasks';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Login from './elements/login';
+
 
 function App() {
 
@@ -15,18 +18,25 @@ function App() {
     this.title = title;
     // true - done -- false - pending
     this.isDone = done;
-  }  
+  }
 
-  useEffect(() => { 
+  useEffect(() => {
     setTasks([]);
   }, []);
 
+  {/* <Getter tasks={ tasks } setTasks={ setTasks } task={ task } setZeroTasks={ setZeroTasks } setIdTask={ setIdTask } idTask={ idTask } />
+      <Tasks todos={ tasks } setTodos={ setTasks } zeroTasks={ zeroTasks } setZeroTasks={ setZeroTasks } /> */}
+
   return (
-    <> 
-      <Getter tasks={ tasks } setTasks={ setTasks } task={ task } setZeroTasks={ setZeroTasks } setIdTask={ setIdTask } idTask={ idTask } />
-      <Tasks todos={ tasks } setTodos={ setTasks } zeroTasks={ zeroTasks } setZeroTasks={ setZeroTasks } />
-    </>
-  ); 
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" name="login" component={Login} />
+        {/* <Route exact path="/main" component={DashBoard} />
+        <Route component={PageNotFound} /> */}
+      </Switch>
+    </BrowserRouter>
+
+  );
 }
 
 export default App;
