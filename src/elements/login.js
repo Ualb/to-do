@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
-import { TextInput, Button, ProgressBar } from 'react-materialize';
+import { TextInput, Button } from 'react-materialize';
 import * as yup from 'yup';
 
 import '../assets/css/main.css';
@@ -52,7 +52,7 @@ const Login = (props) => {
             if (!isSingOn) {
                 axios.get(`/users?filter={"where":{"and":[{"email":"${values.email}"},{"password":"${values.password}"}]}}`)
                     .then((response) => {
-                        if (response.status != 200) {
+                        if (response.status !== 200) {
                             swal("Ha ocurrido un fallo, contáctate con el proveedor!");
                         } else {
                             const user = response.data;
@@ -60,7 +60,7 @@ const Login = (props) => {
                                 swal("No te hemos encontrado.");
                             } else {
                                 localStorage.setItem('user', JSON.stringify(response.data[0]));
-                                props.history.push("/dasboard");
+                                props.history.push("/dashboard");
                             }
                         }
                     })
@@ -95,7 +95,7 @@ const Login = (props) => {
                 })
                     .then(function (response) {
                         localStorage.setItem('user', JSON.stringify(response.data[0]));
-                        props.history.push("/dasboard");
+                        props.history.push("/dashboard");
                     })
                     .catch(function (error) {
                         swal("Ha ocurrido un fallo, contáctate con el proveedor!");
@@ -223,7 +223,7 @@ const Login = (props) => {
                                 Solicitar
                             </Button>
                         </form>
-                        <p onClick={() => setIsSingOn(!isSingOn)}>Aún no tengo cuenta</p>
+                        <p onClick={() => setIsSingOn(!isSingOn)}>Ya tengo cuenta</p>
                     </div>
                 }
                 <ToastContainer
