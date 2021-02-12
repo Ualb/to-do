@@ -1,0 +1,118 @@
+// main layout for login
+.login {
+    // layout
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 0;
+    justify-content: space-around;
+    // colors
+    background: rgb(242, 246, 247);
+
+    // image container
+    &__img_container {
+        // layout
+        width: 58%;
+        height: 100vh;
+        // colors
+        border-right: 2px solid rgb(104, 40, 48);
+        // text and font
+        text-align: center;
+
+        // image
+        &__img_login {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    // box form
+    &__input {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 42%;
+
+        // title
+        h4 {
+            font-family: "Josefin Slab", serif;
+            font-weight: 700;
+            user-select: none;
+        }
+
+        // the form
+        form {
+            // layout
+            display: block;
+            width: 80%;
+            height: 70vh;
+            // text and font
+            font-size: 1rem;
+
+            // the inputs
+            .login__input__email,
+            .login__input__password,
+            .login__input__first_Name,
+            .login__input__surname {
+                height: 5vh;
+                margin: auto;
+                padding: auto;
+            }
+
+            // submit button
+            .buttom {
+                // layout
+                margin-right: 15%;
+                margin-left: 15%;
+                width: 70%;
+                margin-top: 8px;
+                // colors
+                background: white;
+                color: black;
+                -webkit-box-shadow: 0px 9px 13px -1px rgba(0, 0, 0, 0.52);
+                -moz-box-shadow: 0px 9px 13px -1px rgba(0, 0, 0, 0.52);
+                box-shadow: 0px 9px 13px -1px rgba(0, 0, 0, 0.52);
+                // text and font
+                font-family: Roboto;
+                font-weight: 900;
+            }
+        }
+
+        // link to singon or logon
+        p {
+            // color
+            color: #a06dd6;
+            // text and font
+            font-weight: 700;
+            // cursor options
+            cursor: pointer;
+            user-select: none;
+        }
+    }
+}
+
+// label of errors in inputs
+.error-input-message {
+    // layout
+    margin: 0;
+    padding: 0;
+    // color
+    color: rgb(197, 38, 38);
+    // text and font
+    font-size: 0.8rem;
+}
+
+// small screens layout
+@media screen and (max-width: 600px) {
+    // good bay image
+    .login__img_container {
+        display: none;
+    }
+
+    // more anchor for inputtexts
+    .login__input {
+        margin-top: 15%;
+        width: 100%;
+    }
+}
