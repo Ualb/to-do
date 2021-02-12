@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { TextInput, Button } from 'react-materialize';
 import * as yup from 'yup';
 
-import '../assets/css/main.css';
+import '../assets/css/login.css';
 import Img from '../assets/img/planner.jpg';
 
 // for the animations alerts
