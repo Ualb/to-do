@@ -1,0 +1,112 @@
+.login {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0px;
+          flex: 1 1 0;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  background: #f2f6f7;
+}
+
+.login__img_container {
+  width: 58%;
+  height: 100vh;
+  border-right: 2px solid #682830;
+  text-align: center;
+}
+
+.login__img_container__img_login {
+  width: 100%;
+  height: 100%;
+}
+
+.login__input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 42%;
+}
+
+.login__input h4 {
+  font-family: "Josefin Slab", serif;
+  font-weight: 700;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.login__input form {
+  display: block;
+  width: 80%;
+  height: 70vh;
+  font-size: 1rem;
+}
+
+.login__input form .login__input__email,
+.login__input form .login__input__password,
+.login__input form .login__input__first_Name,
+.login__input form .login__input__surname {
+  height: 5vh;
+  margin: auto;
+  padding: auto;
+}
+
+.login__input form .buttom {
+  margin-right: 15%;
+  margin-left: 15%;
+  width: 70%;
+  margin-top: 8px;
+  background: white;
+  color: black;
+  -webkit-box-shadow: 0px 9px 13px -1px rgba(0, 0, 0, 0.52);
+  box-shadow: 0px 9px 13px -1px rgba(0, 0, 0, 0.52);
+  font-family: Roboto;
+  font-weight: 900;
+}
+
+.login__input p {
+  color: #a06dd6;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.error-input-message {
+  margin: 0;
+  padding: 0;
+  color: #c52626;
+  font-size: 0.8rem;
+}
+
+@media screen and (max-width: 600px) {
+  .login__img_container {
+    display: none;
+  }
+  .login__input {
+    margin-top: 15%;
+    width: 100%;
+  }
+}
+/*# sourceMappingURL=login.css.map */

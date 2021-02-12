@@ -1,37 +1,13 @@
+// general not layout
 * {
     margin: 0;
     padding: 0;
 }
 
-.login {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+@import "./login.scss";
 
-    &__img_container {
-        width: 58%;
-        height: 100vh;
-        border-right: 2px solid rgb(48, 45, 45);
-        text-align: center;
-
-        &__img_login {
-            width: 100%;
-            height: 100%;
-        }
-    }
-
-    &__input {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 42%;
-        height: 100vh;
-
-        input {
-        }
-
-        &__email {
-            width: 65%;
-        }
-    }
+body {
+    background: rgb(242, 246, 247);
 }
+
+@import "./dashboard.scss";

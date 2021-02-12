@@ -1,0 +1,122 @@
+.header {
+    height: 15vh;
+    text-align: right;
+    display: flex;
+    flex-direction: row-reverse;
+
+    i {
+        border: 1px solid black;
+        margin-bottom: auto;
+        margin-top: auto;
+        width: fit-content;
+        margin-right: 25px;
+
+        -webkit-border-radius: 500px;
+        -moz-border-radius: 500px;
+        border-radius: 500px;
+
+        // cursor options
+        cursor: pointer;
+        user-select: none;
+    }
+
+    p {
+        margin-bottom: auto;
+        margin-top: auto;
+        width: fit-content;
+        margin-right: 25px;
+        font-size: 1.2rem;
+    }
+}
+
+.dashboard-content {
+    display: flex;
+    flex-direction: row;
+    height: 70vh;
+    background: white;
+    .scrolling {
+        border-radius: 20px;
+        &__container {
+            flex: 1;
+            overflow-y: scroll;
+            border: 1px solid #a06dd6;
+            margin-left: 8px;
+        }
+        &__container_1 {
+            flex: 1;
+            overflow-y: scroll;
+            width: 25%;
+            border: 1px solid #a06dd6;
+            height: 100%;
+        }
+        &__container_3 {
+            width: 25%;
+            margin-left: 8px;
+            border: 1px solid #a06dd6;
+        }
+    }
+}
+
+.scrolling__container__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #a06dd6;
+    h5 {
+        margin-left: 5%;
+    }
+}
+
+.title-filter {
+    height: 25%;
+    border-bottom: 1px solid #a06dd6;
+}
+
+.tag-filter {
+    padding: 8px;
+    height: 35%;
+    border-bottom: 1px solid #a06dd6;
+
+    .chip {
+        cursor: pointer;
+        user-select: none;
+    }
+}
+
+.state-filter {
+    height: auto;
+    padding: 8px;
+}
+
+.custom-button {
+    background: black;
+    color: white;
+    padding: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+
+    &:hover {
+        color: rgb(104, 40, 48);
+        background: wheat;
+    }
+}
+
+#Modal-0 {
+    width: 70%;
+    height: 70%;
+}
+
+.apply {
+    margin-top: 23px;
+}
+
+.lists,
+.task {
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+        background: #a06dd6;
+        color: white;
+    }
+}

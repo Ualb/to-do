@@ -1,25 +1,110 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { TextInput, Button } from 'react-materialize';
-import { Link } from 'react-router-dom';
+import * as yup from 'yup';
 
-
-import '../assets/css/main.css';
+import '../assets/css/login.css';
 import Img from '../assets/img/planner.jpg';
 
-const Login = () => {
+// for the animations alerts
+import swal from 'sweetalert';
 
+// toats for the actions
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+// librery for the .env
+const dotenv = require('dotenv');
+dotenv.config();
+
+const Login = (props) => {
+
+    // is logon or singon?
     const [isSingOn, setIsSingOn] = useState(false);
+    const [isRunCounter, setIsRunCounter] = useState(0);
 
-    const formik = useFormik({
+    // notify of toats
+    const notify = () => {
+        if (isRunCounter <= 1) {
+            toast.info("Estamos consultando la acción");
+            setIsRunCounter(0);
+        }
+    }
+
+    // connect to API
+    const axios = require('axios').default;
+    // .env workspace variables
+    axios.defaults.baseURL = 'https://to-do-back-heroku.herokuapp.com';
+
+    // for logon form
+    const login = useFormik({
         initialValues: {
             password: '',
             email: '',
         },
+        validationSchema: yup.object({
+            email: yup.string().email("Correo Electrónico Inválido").required("Correo Requerido").max(55, "Máximo 255 caracteres"),
+            password: yup.string().required("Contraseña necesaria").min(5, "Mínimo 5 caracteres"),
+        }),
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
-        },
+            notify();
+            if (!isSingOn) {
+                axios.get(`/users?filter={"where":{"and":[{"email":"${values.email}"},{"password":"${values.password}"}]}}`)
+                    .then((response) => {
+                        if (response.status !== 200) {
+                            swal("Ha ocurrido un fallo, contáctate con el proveedor!");
+                        } else {
+                            const user = response.data;
+                            if (user[0] === undefined) {
+                                swal("No te hemos encontrado.");
+                            } else {
+                                localStorage.setItem('user', JSON.stringify(response.data[0]));
+                                props.history.push("/dashboard");
+                            }
+                        }
+                    })
+            }
+        }
     });
+
+    // for singon form
+    const newUser = useFormik({
+        initialValues: {
+            firstName: '',
+            surname: '',
+            email: '',
+            password: '',
+            repeatPassword: '',
+        },
+        validationSchema: yup.object({
+            firstName: yup.string().required("Nombre Requerido").min(2, "Mínimo 5 caracteres").max(25, "Máximo 25 caracteres"),
+            surname: yup.string().required("Apellido Requerido").min(2, "Mínimo 5 caracteres").max(25, "Máximo 25 caracteres"),
+            email: yup.string().email("Correo Inválido").required("Correo Requerido").max(55, "Máximo 255 caracteres"),
+            password: yup.string().required("Contraseña necesaria").min(5, "Mínimo 5 caracteres"),
+            repeatPassword: yup.string().required("Repetición necesaria").min(5, "Mínimo 5 caracteres"),
+        }),
+        onSubmit: values => {
+            if (isSingOn && values.password === values.repeatPassword) {
+                axios.post('/users', {
+                    firstName: values.firstName,
+                    surname: values.surname,
+                    email: values.email,
+                    isConfirmEmail: false,
+                    password: values.password
+                })
+                    .then(function (response) {
+                        localStorage.setItem('user', JSON.stringify(response.data[0]));
+                        props.history.push("/dashboard");
+                    })
+                    .catch(function (error) {
+                        swal("Ha ocurrido un fallo, contáctate con el proveedor!");
+                    });
+            } else {
+                swal("Has que coincidan las contraseñas.");
+            }
+        }
+    })
 
     return (
         <>
@@ -29,94 +114,129 @@ const Login = () => {
                 </div>
                 {!isSingOn ?
                     <div className='login__input' >
-                        <h3>TO-DO</h3>
-                        <form onSubmit={formik.handleSubmit}>
+                        <h4>TO-DO</h4>
+                        <form onSubmit={login.handleSubmit}>
                             <TextInput
                                 email
                                 id="email"
+                                name="email"
                                 label="Correo"
                                 className="login__input__email"
-                                validate
-                                error="Correo no válido"
-                                onChange={formik.handleChange}
+                                onChange={login.handleChange}
+                                value={login.values.email}
                             />
+                            {login.touched.email && login.errors.email ? (
+                                <div className="error-input-message">{login.errors.email}</div>
+                            ) : null}
                             <TextInput
                                 id="password"
+                                name="password"
                                 className="login__input__password"
                                 label="Contraseña"
                                 password={true}
-                                onChange={formik.handleChange}
+                                onChange={login.handleChange}
+                                value={login.values.password}
                             />
-                            <Link
-                                to="/main"
+                            {login.touched.password && login.errors.password ? (
+                                <div className="error-input-message">{login.errors.password}</div>
+                            ) : null}
+                            <Button
+                                node="button"
+                                waves="light"
+                                type="submit"
+                                className="buttom"
                             >
-                                <Button
-                                    node="button"
-                                    waves="light"
-                                    type="submit"
-                                >
-                                    Comenzar
-                                </Button>
-                            </Link>
+                                Comenzar
+                            </Button>
                         </form>
+                        <p onClick={() => setIsSingOn(!isSingOn)}>Aún no tengo cuenta</p>
                     </div>
                     :
                     <div className='login__input' >
-                        <h3>TO-DO</h3>
-                        <form onSubmit={formik.handleSubmit}>
+                        <h4>TO-DO</h4>
+                        <form onSubmit={newUser.handleSubmit}>
                             <TextInput
                                 id="firstName"
+                                name="firstName"
                                 label="Primer Nombre"
                                 className="login__input__first_Name"
-                                error="Se amerita el primer nombre"
-                                onChange={formik.handleChange}
+                                onChange={newUser.handleChange}
+                                value={newUser.values.firstName}
                             />
+                            {newUser.touched.firstName && newUser.errors.firstName ? (
+                                <div className="error-input-message">{newUser.errors.firstName}</div>
+                            ) : null}
                             <TextInput
                                 id="surname"
+                                name="surname"
                                 label=" Primer Apellido"
                                 className="login__input__surname"
-                                error="Se amerita el primer apellido"
-                                onChange={formik.handleChange}
+                                onChange={newUser.handleChange}
+                                value={newUser.values.surname}
                             />
+                            {newUser.touched.surname && newUser.errors.surname ? (
+                                <div className="error-input-message">{newUser.errors.surname}</div>
+                            ) : null}
                             <TextInput
                                 email
                                 id="email"
+                                name="email"
                                 label="Correo"
                                 className="login__input__email"
-                                validate
-                                error="Correo no válido"
-                                onChange={formik.handleChange}
+                                validate={true}
+                                onChange={newUser.handleChange}
+                                value={newUser.values.email}
                             />
+                            {newUser.touched.email && newUser.errors.email ? (
+                                <div className="error-input-message">{newUser.errors.email}</div>
+                            ) : null}
                             <TextInput
                                 id="password"
+                                name="password"
                                 className="login__input__password"
                                 label="Contraseña"
                                 password={true}
-                                onChange={formik.handleChange}
+                                onChange={newUser.handleChange}
+                                value={newUser.values.password}
                             />
+                            {newUser.touched.password && newUser.errors.password ? (
+                                <div className="error-input-message">{newUser.errors.password}</div>
+                            ) : null}
                             <TextInput
-                                id="password"
+                                id="repeatPassword"
+                                name="repeatPassword"
                                 className="login__input__password"
                                 label="Repetir Contraseña"
                                 password={true}
-                                onChange={formik.handleChange}
+                                onChange={newUser.handleChange}
+                                value={newUser.values.repeatPassword}
                             />
-                            <Link
-                                to="/main"
+                            {newUser.touched.repeatPassword && newUser.errors.repeatPassword ? (
+                                <div className="error-input-message">{newUser.errors.repeatPassword}</div>
+                            ) : null}
+                            <Button
+                                node="button"
+                                waves="light"
+                                type="submit"
+                                className="buttom"
                             >
-                                <Button
-                                    node="button"
-                                    waves="light"
-                                    type="submit"
-                                >
-                                    Solicitar
-                                </Button>
-                            </Link>
+                                Solicitar
+                            </Button>
                         </form>
+                        <p onClick={() => setIsSingOn(!isSingOn)}>Ya tengo cuenta</p>
                     </div>
                 }
-
-                <p onClick={() => setIsSingOn(!isSingOn)}>Aún no tengo cuenta</p>
+                <ToastContainer
+                    position="bottom-right"
+                    autoClose={5000}
+                    hideProgressBar={true}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                />
             </div>
         </>
     );
