@@ -1,10 +1,18 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
-import { TextInput, Button } from 'react-materialize';
+import { TextInput, Button, ProgressBar } from 'react-materialize';
 import * as yup from 'yup';
 
 import '../assets/css/main.css';
 import Img from '../assets/img/planner.jpg';
+
+// for the animations alerts
+import swal from 'sweetalert';
+
+// toats for the actions
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 // librery for the .env
 const dotenv = require('dotenv');
@@ -14,6 +22,15 @@ const Login = (props) => {
 
     // is logon or singon?
     const [isSingOn, setIsSingOn] = useState(false);
+    const [isRunCounter, setIsRunCounter] = useState(0);
+
+    // notify of toats
+    const notify = () => {
+        if (isRunCounter <= 1) {
+            toast.info("Estamos consultando la acción");
+            setIsRunCounter(0);
+        }
+    }
 
     // connect to API
     const axios = require('axios').default;
@@ -31,15 +48,16 @@ const Login = (props) => {
             password: yup.string().required("Contraseña necesaria").min(5, "Mínimo 5 caracteres"),
         }),
         onSubmit: values => {
+            notify();
             if (!isSingOn) {
                 axios.get(`/users?filter={"where":{"and":[{"email":"${values.email}"},{"password":"${values.password}"}]}}`)
                     .then((response) => {
                         if (response.status != 200) {
-                            alert("recurso no encontrado");
+                            swal("Ha ocurrido un fallo, contáctate con el proveedor!");
                         } else {
                             const user = response.data;
                             if (user[0] === undefined) {
-                                alert("recurso no encontrado");
+                                swal("No te hemos encontrado.");
                             } else {
                                 localStorage.setItem('user', JSON.stringify(response.data[0]));
                                 props.history.push("/dasboard");
@@ -67,7 +85,6 @@ const Login = (props) => {
             repeatPassword: yup.string().required("Repetición necesaria").min(5, "Mínimo 5 caracteres"),
         }),
         onSubmit: values => {
-            alert(process.env.API_URL);
             if (isSingOn && values.password === values.repeatPassword) {
                 axios.post('/users', {
                     firstName: values.firstName,
@@ -81,10 +98,10 @@ const Login = (props) => {
                         props.history.push("/dasboard");
                     })
                     .catch(function (error) {
-                        alert("error en el servicio, solicite ayuda al distribuidor")
+                        swal("Ha ocurrido un fallo, contáctate con el proveedor!");
                     });
             } else {
-                alert("las contraseñas no coinciden");
+                swal("Has que coincidan las contraseñas.");
             }
         }
     })
@@ -209,6 +226,17 @@ const Login = (props) => {
                         <p onClick={() => setIsSingOn(!isSingOn)}>Aún no tengo cuenta</p>
                     </div>
                 }
+                <ToastContainer
+                    position="bottom-right"
+                    autoClose={5000}
+                    hideProgressBar={true}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                />
             </div>
         </>
     );
