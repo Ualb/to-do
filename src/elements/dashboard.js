@@ -289,7 +289,7 @@ const Task = (props) => {
                             <Switch
                                 id="Switch-11"
                                 offLabel="Recordar"
-                                id="remember"
+                                // id="remember"
                                 name="remember"
                                 onChange={newTask.handleChange}
                                 value={newTask.values.remember}
