@@ -3,20 +3,16 @@ import React, { useState } from 'react';
 import { TextInput, Button } from 'react-materialize';
 import * as yup from 'yup';
 
+// assets in local
 import '../assets/css/login.css';
 import Img from '../assets/img/planner.jpg';
 
 // for the animations alerts
-import swal from 'sweetalert';
+import alertsByType from '../commons/alerts';
 
 // toats for the actions
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
-// librery for the .env
-const dotenv = require('dotenv');
-dotenv.config();
 
 const Login = (props) => {
 
@@ -25,17 +21,21 @@ const Login = (props) => {
     const [isRunCounter, setIsRunCounter] = useState(0);
 
     // notify of toats
-    const notify = () => {
+    const notifyWeWorking = () => {
         if (isRunCounter <= 1) {
-            toast.info("Estamos consultando la acción");
+            alertsByType('WORKING');
             setIsRunCounter(0);
         }
     }
 
     // connect to API
     const axios = require('axios').default;
-    // .env workspace variables
+
+    // URL API variables
     axios.defaults.baseURL = 'https://to-do-back-heroku.herokuapp.com';
+    const getUserWithEmailAndPassword = (values) => {
+        return `/users?filter={"where":{"and":[{"email":"${values.email}"},{"password":"${values.password}"}]}}`;
+    }
 
     // for logon form
     const login = useFormik({
@@ -48,16 +48,16 @@ const Login = (props) => {
             password: yup.string().required("Contraseña necesaria").min(5, "Mínimo 5 caracteres"),
         }),
         onSubmit: values => {
-            notify();
+            notifyWeWorking();
             if (!isSingOn) {
-                axios.get(`/users?filter={"where":{"and":[{"email":"${values.email}"},{"password":"${values.password}"}]}}`)
+                axios.get(getUserWithEmailAndPassword(values))
                     .then((response) => {
                         if (response.status !== 200) {
-                            swal("Ha ocurrido un fallo, contáctate con el proveedor!");
+                            alertsByType('FAILURE');
                         } else {
                             const user = response.data;
                             if (user[0] === undefined) {
-                                swal("No te hemos encontrado.");
+                                alertsByType('WENOTFOUNDYOU');
                             } else {
                                 localStorage.setItem('user', JSON.stringify(response.data[0]));
                                 props.history.push("/dashboard");
@@ -98,10 +98,10 @@ const Login = (props) => {
                         props.history.push("/dashboard");
                     })
                     .catch(function (error) {
-                        swal("Ha ocurrido un fallo, contáctate con el proveedor!");
+                        alertsByType('FAILURE');
                     });
             } else {
-                swal("Has que coincidan las contraseñas.");
+                alertsByType('PASSWORDDONOTMATCH');
             }
         }
     })
