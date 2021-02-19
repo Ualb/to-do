@@ -1,7 +1,6 @@
 import swal from 'sweetalert';
 
 const typeAlert = {
-    'WORKING': 'Estamos consultando la acción',
     'FAILURE': 'Ha ocurrido un fallo, contáctate con el proveedor!',
     // login
     'WENOTFOUNDYOU': 'No te hemos encontrado.',
