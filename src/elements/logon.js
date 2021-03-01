@@ -20,6 +20,15 @@ const LogOn = (props) => {
     // connect to API
     const axios = require('axios').default;
 
+    // var dotenv = require('dotenv')
+    // const result = dotenv.config('.env')
+
+    // // if (result.error) {
+    // //     throw result.error
+    // // }
+
+    // console.log(result.parsed)
+
     // URL API variables
     axios.defaults.baseURL = 'https://to-do-back-heroku.herokuapp.com';
 
@@ -52,6 +61,7 @@ const LogOn = (props) => {
         }),
         onSubmit: values => {
             notifyWeWorking();
+            console.log(process.env.DATA);
             if (!isSingOn) {
                 axios.get(getUserWithEmailAndPassword(values))
                     .then((response) => {
